@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Scissors,
-  Palette,
-  Flower2,
-  Star,
-  Heart,
-  Sparkles,
-  Circle,
-} from "lucide-react";
-import FloatingIcon from "../Components/FloatingIcon";
+import { Sparkles, Flower2, Heart, ArrowLeft } from "lucide-react";
 import { useNavigate, useParams } from "react-router";
 
 const DetailsPage = ({ categories }) => {
@@ -27,119 +18,106 @@ const DetailsPage = ({ categories }) => {
   }, []);
 
   if (!selectedCategory || !selectedItem) {
-    return <div>Item not found</div>;
+    return <div className="p-10 text-center">Item not found</div>;
   }
 
   return (
     <div
-      className={`min-h-screen bg-gradient-to-br from-red-50 to-pink-50 py-20 px-4 transition-opacity duration-1000 ${
+      className={`min-h-screen bg-stone-50 py-20 px-4 transition-opacity duration-1000 ${
         fadeIn ? "opacity-100" : "opacity-0"
-      } relative overflow-hidden`}
+      }`}
     >
-      {/* Floating Icons Background */}
-      <FloatingIcon Icon={Scissors} delay={0} duration={4} x={10} y={15} />
-      <FloatingIcon Icon={Palette} delay={0.5} duration={5} x={85} y={20} />
-      <FloatingIcon Icon={Flower2} delay={1} duration={6} x={15} y={70} />
-      <FloatingIcon Icon={Star} delay={1.5} duration={4.5} x={80} y={75} />
-      <FloatingIcon Icon={Heart} delay={2} duration={5.5} x={50} y={10} />
-      <FloatingIcon Icon={Sparkles} delay={2.5} duration={6} x={90} y={50} />
-      <FloatingIcon Icon={Circle} delay={3} duration={5} x={20} y={40} />
-      <FloatingIcon Icon={Scissors} delay={0.3} duration={5.5} x={70} y={45} />
-      <FloatingIcon Icon={Flower2} delay={1.8} duration={4.8} x={40} y={80} />
-      <FloatingIcon Icon={Star} delay={2.2} duration={5.2} x={60} y={25} />
+      <div className="max-w-6xl mx-auto relative z-10">
+        <button
+          onClick={() => navigate(`/collection/${categoryId}`)}
+          className="mb-8 inline-flex items-center gap-2 text-stone-500 hover:text-orange-600 transition-colors"
+        >
+          <ArrowLeft size={20} /> Back to {selectedCategory.name}
+        </button>
 
-      <div className="max-w-5xl mx-auto relative z-10">
-        <div className="bg-white rounded-3xl shadow-2xl overflow-hidden">
+        <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-stone-100">
           <div className="grid md:grid-cols-2">
             {/* Image Section */}
-            <div className="relative h-96 md:h-auto bg-gradient-to-br from-amber-300 to-orange-400 flex items-center justify-center">
-              <div className="text-9xl animate-pulse">
-                {selectedCategory.image}
+            <div className="relative h-96 md:h-[600px] overflow-hidden">
+              <img
+                src={selectedItem.image}
+                alt={selectedItem.name}
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000"
+              />
+              <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-1 rounded-full text-sm font-bold text-amber-800 shadow-sm">
+                {selectedCategory.name}
               </div>
-
-              {/* Animated corners */}
-              <div className="absolute top-4 left-4 w-16 h-16 border-t-4 border-l-4 border-white opacity-50 animate-pulse" />
-              <div className="absolute top-4 right-4 w-16 h-16 border-t-4 border-r-4 border-white opacity-50 animate-pulse" />
-              <div className="absolute bottom-4 left-4 w-16 h-16 border-b-4 border-l-4 border-white opacity-50 animate-pulse" />
-              <div className="absolute bottom-4 right-4 w-16 h-16 border-b-4 border-r-4 border-white opacity-50 animate-pulse" />
             </div>
 
             {/* Details Section */}
-            <div className="p-8 md:p-12">
-              <div className="mb-6">
-                <span className="inline-block px-4 py-1 bg-amber-100 text-amber-800 rounded-full text-sm font-semibold mb-4">
-                  {selectedCategory.name}
-                </span>
-                <h2 className="text-4xl font-bold mb-4 text-amber-900 animate-fade-in">
+            <div className="p-8 md:p-12 flex flex-col justify-center bg-white">
+              <div className="mb-8">
+                <h2 className="text-4xl md:text-5xl font-bold mb-4 text-stone-800">
                   {selectedItem.name}
                 </h2>
-                <div className="text-3xl font-bold text-orange-600 mb-6">
+                <div className="text-3xl font-bold text-orange-600">
                   {selectedItem.price}
                 </div>
               </div>
 
-              <p className="text-amber-800 mb-6 leading-relaxed">
+              <p className="text-stone-600 mb-8 leading-relaxed text-lg">
                 {selectedItem.description}
               </p>
 
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center space-x-3 p-3 bg-amber-50 rounded-lg">
-                  <Sparkles className="text-amber-600" size={20} />
+              <div className="space-y-4 mb-10">
+                <div className="flex items-center space-x-4 p-4 bg-amber-50 rounded-xl border border-amber-100">
+                  <div className="bg-white p-2 rounded-full shadow-sm">
+                    <Sparkles className="text-amber-600" size={20} />
+                  </div>
                   <div>
-                    <span className="font-semibold text-amber-900">
-                      Artisan:
+                    <span className="block text-xs font-bold uppercase tracking-wider text-amber-800">
+                      Artisan
                     </span>
-                    <span className="ml-2 text-amber-700">
+                    <span className="text-lg font-semibold text-stone-800">
                       {selectedItem.artisan}
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-3 p-3 bg-orange-50 rounded-lg">
-                  <Flower2 className="text-orange-600" size={20} />
+                <div className="flex items-center space-x-4 p-4 bg-orange-50 rounded-xl border border-orange-100">
+                  <div className="bg-white p-2 rounded-full shadow-sm">
+                    <Flower2 className="text-orange-600" size={20} />
+                  </div>
                   <div>
-                    <span className="font-semibold text-amber-900">
-                      Village:
+                    <span className="block text-xs font-bold uppercase tracking-wider text-orange-800">
+                      Origin
                     </span>
-                    <span className="ml-2 text-amber-700">
+                    <span className="text-lg font-semibold text-stone-800">
                       {selectedItem.village}
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-3 p-3 bg-red-50 rounded-lg">
-                  <Heart className="text-red-600" size={20} />
+                <div className="flex items-center space-x-4 p-4 bg-rose-50 rounded-xl border border-rose-100">
+                  <div className="bg-white p-2 rounded-full shadow-sm">
+                    <Heart className="text-rose-600" size={20} />
+                  </div>
                   <div>
-                    <span className="font-semibold text-amber-900">
-                      Details:
+                    <span className="block text-xs font-bold uppercase tracking-wider text-rose-800">
+                      Specifications
                     </span>
-                    <span className="ml-2 text-amber-700 text-sm">
+                    <span className="text-sm font-semibold text-stone-800">
                       {selectedItem.details}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <button className="w-full py-4 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 transform hover:scale-105 shadow-lg">
-                Add to Cart
-              </button>
+              <div className="flex gap-4">
+                <button className="flex-1 py-4 bg-stone-900 text-white font-bold rounded-xl hover:bg-orange-600 transition-all duration-300 shadow-lg">
+                  Add to Cart
+                </button>
+                <button className="px-6 py-4 border-2 border-stone-200 rounded-xl hover:border-orange-600 hover:text-orange-600 transition-colors">
+                  <Heart size={24} />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div className="text-center mt-12 space-x-4">
-          <button
-            onClick={() => navigate(`/collection/${categoryId}`)}
-            className="px-6 py-3 bg-amber-600 text-white rounded-full hover:bg-amber-700 transition-colors shadow-lg"
-          >
-            ← Back to Collection
-          </button>
-          <button
-            onClick={() => navigate("/categories")}
-            className="px-6 py-3 bg-orange-600 text-white rounded-full hover:bg-orange-700 transition-colors shadow-lg"
-          >
-            All Categories
-          </button>
         </div>
       </div>
     </div>

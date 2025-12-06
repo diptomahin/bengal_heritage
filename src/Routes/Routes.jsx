@@ -1,25 +1,47 @@
 import { createBrowserRouter } from "react-router";
 import HomePage from "../Pages/HomePage";
 import CategoriesPage from "../Pages/CategoriesPage";
-import { categoriesData } from '../data/categoriesData';
+import { categoriesData } from "../data/categoriesData";
 import CollectionPage from "../Pages/CollectionPage";
 import DetailsPage from "../Pages/DetailsPage";
+import Login from "../Pages/Login";
+import Register from "../Pages/Register";
+import App from "../App";
+import AboutPage from "../Pages/AboutPage";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
-  },
-  {
-    path: "/categories",
-    element: <CategoriesPage categories={categoriesData} />,
-  },
-  {
-    path: "/collection/:categoryId",
-    element: <CollectionPage categories={categoriesData} />,
-  },
-  {
-    path: "/details/:categoryId/:itemId",
-    element: <DetailsPage categories={categoriesData} />,
+    element: <App />,
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/register",
+        element: <Register />,
+      },
+      {
+        path: "/about",
+        element: <AboutPage />,
+      },
+      {
+        path: "/categories",
+        element: <CategoriesPage categories={categoriesData} />,
+      },
+      {
+        path: "/collection/:categoryId",
+        element: <CollectionPage categories={categoriesData} />,
+      },
+      {
+        path: "/details/:categoryId/:itemId",
+        element: <DetailsPage categories={categoriesData} />,
+      },
+    ],
   },
 ]);
 
