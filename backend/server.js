@@ -1,5 +1,9 @@
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+
+dotenv.config();
 
 const app = express();
 const PORT = 3000;
@@ -7,30 +11,33 @@ const PORT = 3000;
 app.use(cors());
 app.use(express.json());
 
+// Initialize Gemini
+// eslint-disable-next-line no-undef
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const model = genAI.getGenerativeModel({
+    model: "gemini-1.5-flash-latest",
+});
+
+console.log(genAI)
+
 app.get("/", (req, res) => {
-    res.send("Hello from the backend!");
+    res.send("Hello from Gemini backend!");
 });
 
 app.post("/chat", async (req, res) => {
     const { message } = req.body;
 
+    if (!message) {
+        return res.status(400).json({ error: "Message is required" });
+    }
+
     try {
-        const ollamaResponse = await fetch("http://localhost:11434/api/generate", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                model: "phi3.5",
-                prompt: message,
-                stream: false,
-            }),
-        });
-
-        const data = await ollamaResponse.json();
-        res.json({ reply: data.response });
-
+        const result = await model.generateContent(message);
+        const reply = result.response.text();
+        res.json({ reply });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Ollama not responding" });
+        console.error("Gemini error:", error);
+        res.status(500).json({ error: "Gemini API error" });
     }
 });
 

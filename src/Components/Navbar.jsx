@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { ShoppingBag, User, Menu, X, MessageCircle } from "lucide-react";
+import React, { useState, useEffect, useContext } from "react";
+import { ShoppingBag, User, Menu, X, MessageCircle, LogIn } from "lucide-react";
 import { Link } from "react-router"; // Ensure this matches your router version (react-router-dom usually)
 import ChatWidget from "./ChatWidget"; // Import the new component
+import { AuthContext } from "../Provider/AuthProvider";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user } = useContext(AuthContext);
 
   // New state for Chat Modal
   const [isChatOpen, setIsChatOpen] = useState(false);
@@ -66,14 +68,23 @@ const Navbar = () => {
               <span>Chat with us</span>
             </button>
             {/* --- NEW CHAT BUTTON END --- */}
-
-            <Link
-              to="/login"
-              className="cursor-pointer hover:text-orange-600 transition"
-              title="Login"
-            >
-              <User size={22} />
-            </Link>
+            {user ? (
+              <Link
+                to="/profile"
+                className="cursor-pointer hover:text-orange-600 transition"
+                title="Profile"
+              >
+                <User size={22} />
+              </Link>
+            ) : (
+              <Link
+                to="/login"
+                className="cursor-pointer hover:text-orange-600 transition"
+                title="Login"
+              >
+                <LogIn size={22} />
+              </Link>
+            )}
 
             <div className="relative cursor-pointer hover:text-orange-600 transition">
               <ShoppingBag size={20} />
